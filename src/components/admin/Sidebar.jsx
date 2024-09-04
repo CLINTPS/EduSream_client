@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/actions/userAction";
 import { MdLogout } from "react-icons/md";
-import { RiDashboardHorizontalFill } from "react-icons/ri";
 
 
 
@@ -62,11 +61,14 @@ const Sidebar = () => {
           <Link to="/admin/instructor" className="px-6 py-4 hover:bg-gray-700">
             Instructor
           </Link>
+          <Link to="/admin/instructorRequest" className="px-6 py-4 hover:bg-gray-700">
+            Instructor Request
+          </Link>
           {/* <Link to="/admin/courses" className="px-6 py-4 hover:bg-gray-700">
             Courses
           </Link> */}
         </div>
-        <div className="flex items-center justify-center h-16 hover:bg-gray-700 bg-gray-900 mt-96">
+        <div className="flex items-center justify-center h-16 hover:bg-gray-700 bg-gray-900 mt-80">
         <MdLogout />
           <a
             href="/"

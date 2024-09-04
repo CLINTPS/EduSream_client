@@ -8,6 +8,7 @@ import { URL } from '../../../common/api';
 import toast from "react-hot-toast";
 import BlockImg from '../../../assets/block&unblock/block.svg'
 import UnBlockImg from '../../../assets/block&unblock/unblock.svg'
+import EmtyData from '../../../components/empty/EmtyData';
 
 
 const AdminStudents = () => {
@@ -52,7 +53,7 @@ const AdminStudents = () => {
       ) : error ? (
         <p className="text-red-500">Error: {error}</p>
       ) : students.length === 0 ? (
-        <p>No students found.</p>
+        <EmtyData/>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">

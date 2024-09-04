@@ -62,11 +62,13 @@ export const googleSignup = createAsyncThunk('user/googleSignup', async (userCre
     }
 })
 
-export const updateUserRole = createAsyncThunk(
-    'user/updateUserRole',
-    async ({ role, email }, { rejectWithValue }) => {
+export const becomeInstructor = createAsyncThunk(
+    'user/becomeInstructor',
+    async (becomeInstructorCredentials, { rejectWithValue }) => {
+        console.log("Reach becomeInstructorCredentials ......");
+        
       try {
-        const { data } = await axios.post(`${URL}/auth/update-role`, { role, email }, config);
+        const { data } = await axios.post(`${URL}/auth/becomeInstructor`, becomeInstructorCredentials, config);
         return data;
       } catch (error) {
         console.error('Error updating role:', error);
@@ -74,3 +76,15 @@ export const updateUserRole = createAsyncThunk(
       }
     }
   );
+
+  export const userEditProfile = createAsyncThunk('user/userEditProfile',async (userEditProfileCredentials,{rejectWithValue})=>{
+    try {
+        console.log("Redux,action,userEditProfileCredentials : ",userEditProfileCredentials);
+        const {data}=await axios.post(`${URL}/auth/userEditProfile`,userEditProfileCredentials,config)
+        console.log("userEditProfile response : ",data);
+        return data
+    } catch (error) {
+        console.log('Error from userEditProfile', error.response.data.message);
+        return rejectWithValue(error.response.data.message)
+    }
+})

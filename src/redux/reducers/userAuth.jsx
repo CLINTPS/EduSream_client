@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signup,login,getUserData, googleSignup, updateUserRole } from "../actions/userAction";
+import { signup,login,getUserData, googleSignup, becomeInstructor } from "../actions/userAction";
 
 
 const userSlice=createSlice({
@@ -67,6 +67,7 @@ const userSlice=createSlice({
             state.loading=true 
         })
         .addCase(googleSignup.fulfilled,(state,{payload})=>{
+            // console.log("fbdsyfbdsfuo0",payload); 
             state.loading=false,
             state.error=null,
             state.user=payload.data
@@ -76,15 +77,15 @@ const userSlice=createSlice({
             state.error=payload,
             state.user=null
         })
-        .addCase(updateUserRole.pending, (state) => {
+        .addCase(becomeInstructor.pending, (state) => {
             state.loading = true;
           })
-          .addCase(updateUserRole.fulfilled, (state, { payload }) => {
+          .addCase(becomeInstructor.fulfilled, (state, { payload }) => {
             state.loading = false;
             state.error = null;
             state.user = { ...state.user, role: payload.role };
           })
-          .addCase(updateUserRole.rejected, (state, { payload }) => {
+          .addCase(becomeInstructor.rejected, (state, { payload }) => {
             state.loading = false;
             state.error = payload;
           });

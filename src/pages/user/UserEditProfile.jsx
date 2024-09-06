@@ -6,78 +6,81 @@ import ImageUplode from "../../util/ImageUplode";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
-import { userEditProfile } from '../../redux/actions/userAction';
+import { getUserData, userEditProfile } from '../../redux/actions/userAction';
+import toast from 'react-hot-toast';
 
 const UserEditProfile = () => {
   const { user } = useSelector((state) => state.user);
-//   console.log("Current editing user....",user);
-  
+
   const [profileImage, setProfileImage] = useState(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
+  const [country, setCountry] = useState(user.country || "");
+  const [state, setState] = useState(user.state || "");
 
   const formik = useFormik({
     initialValues: {
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      email: user.email || '',
-      dob: user.dob || '',
-      gender: user.gender || '',
-      phoneNumber: user.phoneNumber || '',
-      houseName: user.houseName || '',
-      street: user.street || '',
-      district: user.district || '',
-      country: user.country || '',
-      state: user.state || '',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      dob: user.dob,
+      gender: user.gender,
+      phoneNumber: user.phoneNumber,
+      houseName: user.houseName,
+      street: user.street,
+      district: user.district,
+      country: user.country,
+      state: user.state,
       profileImage: user.profile?.avatar || null,
     },
+    enableReinitialize: true, 
     validationSchema: Yup.object({
       firstName: Yup.string().required('First Name is required'),
       lastName: Yup.string().required('Last Name is required'),
       phoneNumber: Yup.string().matches(/^[0-9]+$/, 'Must be a valid phone number'),
     }),
     onSubmit: async (values) => {
-        try {
-          if (profileImage) {
-            const uploadedImageUrl = await ImageUplode(profileImage);
-            values.profileImage = uploadedImageUrl; 
-          }
-  
-        //   console.log('Form values:', values);
-        
-        const resultAction = await dispatch(userEditProfile(values));
-          console.log('Form resultAction:', resultAction);
-          // if (userEditProfile.fulfilled.match(resultAction)) {
-          //   navigate('/home/profile');
-          // } else {
-          //   console.error("Failed to update profile:", resultAction.payload);
-          // }
-  
-        } catch (error) {
-          console.error("Error uploading image:", error);
+      try {
+        if (profileImage) {
+          const uploadedImageUrl = await ImageUplode(profileImage);
+          values.profileImage = uploadedImageUrl;
         }
-      },
+
+        const resultAction = await dispatch(userEditProfile(values));
+        if (resultAction.meta.requestStatus === "fulfilled") {
+          await dispatch(getUserData());
+          toast.success("Profile edited successfully.");
+          navigate('/home/profile');
+        } else {
+          toast.error("Failed to update profile.");
+          console.error("Failed to update profile:", resultAction.payload);
+        }
+
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    },
   });
 
   useEffect(() => {
+    console.log("User data:", user);
     formik.setValues({
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      email: user.email || '',
-      dob: user.dob || '',
-      gender: user.gender || '',
-      phoneNumber: user.phoneNumber || '',
-      houseName: user.houseName || '',
-      street: user.street || '',
-      district: user.district || '',
-      country: user.country || '',
-      state: user.state || '',
-      profileImage: user.profile?.avatar || null,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      dob: user.dob,
+      gender: user.gender,
+      phoneNumber: user.phoneNumber,
+      houseName: user.houseName,
+      street: user.street,
+      district: user.district,
+      country: user.country,
+      state: user.state,
+      profileImage: user.profile?.avatar,
     });
-  }, []);
-
+    setCountry(user.country || "");
+    setState(user.state || ""); 
+  }, [user]);
 
   const handleImageChange = (e) => {
     setProfileImage(e.target.files[0]);
@@ -221,33 +224,6 @@ const UserEditProfile = () => {
               </div>
 
               <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                <CountryDropdown
-                  value={country}
-                  onChange={(val) => {
-                    setCountry(val);
-                    formik.setFieldValue('country', val); 
-                  }}
-                  className="mt-1 p-2 w-full border border-gray-300 rounded"
-                />
-              </div>
-
-              <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-                <RegionDropdown
-                  country={country}
-                  value={state}
-                  onChange={(val) => {
-                    setState(val);
-                    formik.setFieldValue('state', val); 
-                  }}
-                  className="mt-1 p-2 w-full border border-gray-300 rounded"
-                />
-              </div>
-
-
-
-              <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="district">
                   District
                 </label>
@@ -261,6 +237,34 @@ const UserEditProfile = () => {
                 />
               </div>
 
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country">
+                  Country
+                </label>
+                <CountryDropdown
+                  value={country}
+                  onChange={(val) => {
+                    setCountry(val);
+                    formik.setFieldValue('country', val);
+                  }}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="state">
+                  State
+                </label>
+                <RegionDropdown
+                  country={country}
+                  value={state}
+                  onChange={(val) => {
+                    setState(val);
+                    formik.setFieldValue('state', val);
+                  }}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
 
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="profileImage">
@@ -268,29 +272,29 @@ const UserEditProfile = () => {
                 </label>
                 <input
                   type="file"
-                  name="profileImage"
                   accept="image/*"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   onChange={handleImageChange}
                 />
               </div>
+
             </div>
 
             <div className="flex justify-between">
               <button
                 type="submit"
-                className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Save Changes
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Cancel
               </button>
             </div>
+
           </form>
         </div>
       </div>

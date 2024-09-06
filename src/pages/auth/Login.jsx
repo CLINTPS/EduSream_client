@@ -99,13 +99,32 @@ const Login = () => {
   };
 
   const handleGoogleLoginSuccess = async (data) => {
-    console.log("Google auth data for signup time:", data);
-    const googleLoginData= await dispatch(googleSignup(data));
-    console.log("googleLoginData.......",googleLoginData);
-    toast.success("Login successful");
-    navigate("/");
+    try {
+      console.log("Google auth data for signup time:", data);
+      const googleLoginData = await dispatch(googleSignup(data));
+      console.log("googleLoginData.......", googleLoginData);
+  
+      if (
+        googleLoginData.meta.requestStatus === "fulfilled" &&
+        !googleLoginData.payload?.isAxiosError
+      ) {
+        toast.success("Login successful");
+        navigate("/");
+      } else if (googleLoginData.payload?.isAxiosError) {
+        toast.error("Network error. Please check your connection and try again.");
+      } else {
+        const backendMessage = googleLoginData.payload?.message.match(/Error: (.*?)<br>/)?.[1];
+        if (backendMessage) {
+          toast.error(backendMessage);
+        } else {
+          toast.error("Login failed");
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected error during Google login:", error);
+      toast.error("Unexpected error occurred");
+    }
   };
-
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center items-center bg-gradient-to-br from-gray-100 to-gray-500">
       <div className="flex-1 flex items-center justify-center">

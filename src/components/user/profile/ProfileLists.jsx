@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { becomeInstructor } from "../../../redux/actions/userAction";
+import { becomeInstructor, getUserData } from "../../../redux/actions/userAction";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ImageUplode from "../../../util/ImageUplode";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { formatDate } from "../../../util/formatDate";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import LodingData from '../../../components/LandingPage/LodingData'
 
 const validationSchema = Yup.object({
   qualification: Yup.string().required("Qualification is required"),
@@ -43,15 +44,20 @@ const ProfileLists = () => {
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [userRole, setUserRole] = useState(user?.role);
+  const [loading,setLoding] = useState(false)
+
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [dispatch]);
 
   const handleBecomeInstructore = async (role, details) => {
     const formData = { role, email: user.email, ...details };
     // console.log("Form Data......", formData);
-
+      setLoding(true)
     try {
       const response = await dispatch(becomeInstructor(formData));
       console.log("Response..", response);
-
+      
       if (response.meta.requestStatus === "fulfilled") {
         setUserRole("pending");
         console.log("Profile list 111111", response.payload.success);
@@ -62,8 +68,11 @@ const ProfileLists = () => {
       }
     } catch (error) {
       console.error("Error changing role:", error);
+    }finally {
+      setLoding(false)
+      setIsModalOpen(false);
+      dispatch(getUserData());
     }
-    setIsModalOpen(false);
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -86,15 +95,15 @@ const ProfileLists = () => {
           onClick={handleEditProfile}>
             <FaEdit />
           </button>
-
+          
           <div className="bg-gradient-to-r from-gray-200 to-gray-300 p-6 flex flex-col items-center">
             <img
-              src="https://via.placeholder.com/150"
+              src={user.profile?.avatar || "https://via.placeholder.com/150"}
               alt="Profile"
               className="w-28 h-28 rounded-full border-4 border-white shadow-md"
             />
             <h2 className="mt-4 text-2xl font-bold text-black">
-              {user.firstName || "--"}
+              {user.firstName || "--"} {user.lastName || "--"}
             </h2>
             <p className="text-black text-opacity-75">{user.email || "--"}</p>
           </div>
@@ -105,14 +114,22 @@ const ProfileLists = () => {
                 <h3 className="text-lg font-semibold text-gray-700">
                   Personal Information
                 </h3>
-                <p className="mt-2 text-gray-600">
+                <p className="mt-1 text-gray-600">
                   Full Name : {user.firstName || "--"}
                 </p>
-                <p className="mt-2 text-gray-600">
+                <p className="mt-1 text-gray-600">
                   Last Name : {user.lastName || "--"}
                 </p>
-                <p className="mt-2 text-gray-600">Role : {userRole || "--"}</p>
-                <p className="mt-2 text-gray-600">
+                <p className="mt-1 text-gray-600">
+                  DOB : {user.profile.dob ? formatDate(user.profile.dob) : "--"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Gender : {user.profile?.gender || "--"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Phone No : {user.contact?.phoneNumber || "--"}
+                </p>
+                <p className="mt-1 text-gray-600">
                   Join Date :{" "}
                   {user.createdAt ? formatDate(user.createdAt) : "--"}
                 </p>
@@ -122,11 +139,20 @@ const ProfileLists = () => {
                 <h3 className="text-lg font-semibold text-gray-700">
                   Additional Info
                 </h3>
-                <p className="mt-2 text-gray-600">
-                  DOB : {user.profile.dob ? formatDate(user.profile.dob) : "--"}
+                <p className="text-gray-600 mt-1">
+                  House Name : {user.address?.houseName || "--"}
                 </p>
-                <p className="text-gray-600">
-                  Gender : {user.profile.gender || "--"}
+                <p className="text-gray-600 mt-1">
+                  Country : {user.address?.country || "--"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  State : {user.address?.state || "--"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                District : {user.address?.district || "--"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                Street : {user.address?.street || "--"}
                 </p>
               </div>
             </div>
@@ -157,7 +183,7 @@ const ProfileLists = () => {
             ) : null}
           </div>
         </div>
-
+          
         {isModalOpen && (
           <div className="fixed inset-1 ml-56 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full h-auto max-h-[80vh] space-y-4 overflow-auto">
@@ -198,8 +224,10 @@ const ProfileLists = () => {
                   handleBecomeInstructore("pending", updatedValues);
                 }}
               >
+                
                 {({ isSubmitting, setFieldValue }) => (
                   <Form className="space-y-4">
+                    
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         Qualification
@@ -498,21 +526,28 @@ const ProfileLists = () => {
                     </div>
 
                     <div className="flex justify-end space-x-4">
+                  {loading ? (
+                    <LodingData />
+                  ) : (
+                    <>
                       <button
                         type="button"
                         className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                        onClick={closeModal}
+                        onClick={() => setIsModalOpen(false)}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || loading}
                       >
                         Submit
                       </button>
-                    </div>
+                    </>
+                  )}
+                </div>
+
                   </Form>
                 )}
               </Formik>

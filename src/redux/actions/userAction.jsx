@@ -31,7 +31,7 @@ export const login = createAsyncThunk('user/login',async(userCredentials, { reje
 export const getUserData = createAsyncThunk('user/getUserData',async(_, {rejectWithValue})=>{
     try {
         const {data}=await axios.get(`${URL}/auth/`,config)
-        console.log("getUserData response : ",data);
+        // console.log("getUserData response : ",data);
         return data
     } catch (error) {
         console.error("Error from getUserData:",error);

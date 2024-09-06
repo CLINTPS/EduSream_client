@@ -49,7 +49,7 @@ const UserNav = () => {
           <div className="relative">
             <button className="focus:outline-none flex items-center space-x-1 border-2 border-gray-300 rounded-3xl" onClick={toggleProfileMenu}>
               <img
-                src={avater}
+                src={user.profile?.avatar || "https://via.placeholder.com/150"}
                 alt="Profile"
                 className="h-9 w-9 rounded-full border-2 border-gray-200"
               />

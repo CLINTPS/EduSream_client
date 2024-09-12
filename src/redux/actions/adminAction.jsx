@@ -64,6 +64,55 @@ export const rejectInstructor = createAsyncThunk(
   }
 );
 
+export const fetchPendingCourses = createAsyncThunk(
+  "admin/fetchCourses",
+  async (_, { rejectWithValue }) => {
+    try {
+      console.log("fetchPendingCourses reached");
+      
+      const { data } = await axios.get(`${URL}/course/getPendingCourses`, config);
+      console.log("getPendingCourses",data);      
+      return data;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const approveCourse = createAsyncThunk(
+  "admin/approveCourse",
+  async ({id}, { rejectWithValue }) => {
+    try {
+      console.log("approveCourse reached id:",id);
+      const response = await axios.post(`${URL}/course/approveCourse`, {
+        id,
+      },config);
+      console.log("approveCourse data",response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const rejectCourse = createAsyncThunk(
+  "admin/rejectCourse",
+  async ({id,reason }, { rejectWithValue }) => {
+    try {
+      console.log("rejectCourse reached id:",id,reason );
+      const response = await axios.post(`${URL}/course/rejectCourse`, {
+        id,
+        reason 
+      },config);
+      console.log("rejectCourse data",response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // export const blockUnblockUser= createAsyncThunk('admin/blockUnblockUser', async ({userId, isBlocked},{rejectWithValue}) => {
 //     try {
 //         const { data } = await axios.post(`${URL}/auth/blockUnblockUser`,{ userId, isBlocked },config);

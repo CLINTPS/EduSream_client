@@ -94,7 +94,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Unexpected error during login:", error);
-      toast.error("Unexpected error occurred");
+      toast.error("Invalid password or email");
     }
   };
 

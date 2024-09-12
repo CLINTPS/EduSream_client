@@ -16,6 +16,8 @@ const UserHome = lazy(() => import("./pages/user/UserHome"));
 const UserProfile = lazy(()=>import("./pages/user/UserProfile"));
 const UserEditProfile = lazy(()=>import("./pages/user/UserEditProfile"))
 const UserPurchasedCourses = lazy(()=>import("./pages/user/UserPurchasedCourses"))
+const UserCoursePage = lazy(()=>import("./pages/user/UserCoursePage"))
+const CourseDetailPage = lazy(()=>import("./pages/user/CourseDetailPage"))
 
 //Admin
 const AdminDash = lazy(() => import("./pages/admin/AdminDash"));
@@ -25,12 +27,16 @@ const AdminStudents = lazy(()=>import("./pages/admin/AdminStudents/AdminStudents
 const AdminInstructor = lazy(()=>import("./pages/admin/AdminInstructor/AdminInstructor"))
 const AdminInsractureRequest = lazy(()=>import("./pages/admin/AdminInsractureRequest/AdminInsractureRequest"))
 const InstractureRequestDetails = lazy(()=>import("./pages/admin/AdminInsractureRequest/InstractureRequestDetails"))
+const AdminSingleCourses = lazy(()=>import("./pages/admin/AdminCourse/AdminSingleCourses"))
 
 //Instructore 
 const InstructorDash = lazy(() => import("./pages/instracture/InstructorDash"));
 const InstractureDashboard = lazy(() => import("./pages/instracture/InsreactureDashBoard/InstractureDashboard"));
 const InstractureProfile = lazy(() => import("./pages/instracture/InstructorProfile/InstractureProfile"));
 const InstractureCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureCourses"));
+const InstracturAddCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureAddCourses"));
+const InstracturEditCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureEditCourses"));
+const InstractureSingleCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureSingleCourses"));
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -39,10 +45,9 @@ function App() {
 
   useEffect(()=>{
     // console.log("Current fetching controller",user);
-    
     if(!user){
       dispatch(getUserData()).then(()=>{
-        console.log("Current user Data....>>...>>",user);
+        // console.log("Current user Data....>>...>>",user);
       })
     }
   },[dispatch, user])
@@ -91,6 +96,8 @@ function StudentRoute(){
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="profile/edit" element={<UserEditProfile/>}/>
       <Route path="purchasedCourses" element={<UserPurchasedCourses/>}/>
+      <Route path="AllCourses" element={<UserCoursePage/>}/>
+      <Route path="course/:id" element={<CourseDetailPage />} />
     </Routes>
   )
 }
@@ -105,6 +112,7 @@ function AdminRoutes() {
       <Route path="instructor" element={<AdminInstructor/>}/>
       <Route path="instructorRequest" element={<AdminInsractureRequest/>}/>
       <Route path="instructorRequest/:id" element={<InstractureRequestDetails/>}/>
+      <Route path="courses/singleView/:id" element={<AdminSingleCourses/>}/>
     </Routes>
   );
   
@@ -117,6 +125,9 @@ function InstructorRoutes() {
       <Route path="dashboard" element={<InstractureDashboard />} />
       <Route path="profile" element={<InstractureProfile />} />
       <Route path="courses" element={<InstractureCourses />} />
+      <Route path="courses/add" element={<InstracturAddCourses />} />
+      <Route path="courses/edit/:id" element={<InstracturEditCourses />} />
+      <Route path="courses/singleView/:id" element={<InstractureSingleCourses />} />
     </Routes>
   );
 }

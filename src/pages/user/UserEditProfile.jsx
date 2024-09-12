@@ -25,11 +25,11 @@ const UserEditProfile = () => {
       email: user.email,
       dob: user.dob,
       gender: user.gender,
-      phoneNumber: user.phoneNumber,
-      houseName: user.houseName,
-      street: user.street,
-      district: user.district,
-      country: user.country,
+      phoneNumber: user.contact.phoneNumber,
+      houseName: user.address.houseName,
+      street: user.address.street,
+      district: user.address.district,
+      country: user.address.country,
       state: user.state,
       profileImage: user.profile?.avatar || null,
     },
@@ -94,7 +94,7 @@ const UserEditProfile = () => {
   return (
     <div className="lg:flex ">
       <UserSideBar />
-      <div className="flex-grow p-6 bg-gray-300">
+      <div className="flex-grow p-6 bg-gray-300 lg:ml-64">
         <h2 className="text-3xl font-bold mb-2">User Edit Profile</h2>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <form onSubmit={formik.handleSubmit}>

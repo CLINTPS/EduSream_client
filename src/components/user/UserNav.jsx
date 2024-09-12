@@ -37,7 +37,7 @@ const UserNav = () => {
           <Link to="/" className="text-black hover:text-black hover:underline">
             Home
           </Link>
-          <Link to="#" className="text-black hover:text-black hover:underline">
+          <Link to="/home/AllCourses" className="text-black hover:text-black hover:underline">
             Courses
           </Link>
           <Link to="#" className="text-black hover:text-black hover:underline">

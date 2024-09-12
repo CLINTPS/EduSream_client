@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, fetchInstructorById } from "../actions/adminAction";
+import { fetchUsers, fetchInstructorById, fetchPendingCourses } from "../actions/adminAction";
 
 const adminSlice = createSlice({
   name: 'admin',
@@ -8,6 +8,9 @@ const adminSlice = createSlice({
     students: [],
     instructors: [],
     instructorsPending: [],
+    pendingCourses: {
+      pendingCourse: [] 
+    },
     selectedInstructor: null,
     error: null,
   },
@@ -36,6 +39,19 @@ const adminSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchInstructorById.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+      .addCase(fetchPendingCourses.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPendingCourses.fulfilled, (state, { payload }) => {
+        // console.log("Payload",payload);
+        state.loading = false;
+        state.pendingCourses = payload.data;
+        state.error = null;
+      })
+      .addCase(fetchPendingCourses.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

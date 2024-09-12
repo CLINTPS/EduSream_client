@@ -30,6 +30,7 @@ const ImageUplode = async (image)=> {
         }
 
     } catch (error) {
+        toast.error("can't upload image")
         console.error('Error uploading image:', error);
         throw error;
     }

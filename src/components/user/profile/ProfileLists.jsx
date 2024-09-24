@@ -33,7 +33,7 @@ const validationSchema = Yup.object({
   facebook: Yup.string().url("Invalid URL").notRequired(),
 });
 
-const ProfileLists = () => {
+const ProfileLists = () => {  
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,7 +83,6 @@ const ProfileLists = () => {
 
   const handleEditProfile = () => {
     // console.log("Edit page check");
-    
     navigate('/home/profile/edit');
   };
 
@@ -161,14 +160,14 @@ const ProfileLists = () => {
           <div className="flex justify-between items-center mb-2">
             <div>
               {user.rejectReson && user.rejectReson.length > 0 && (
-                <p className="ml-2 text-red-600">
+                <p className="ml-6 text-red-600">
                   Instructor request is rejected, try again!
                 </p>
               )}
             </div>
             {userRole === "student" ? (
               <button
-                className="px-6 py-2 mr-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition shadow-md"
+                className="px-4 py-2 mr-6 bg-green-600 text-white rounded-full hover:bg-green-600 transition shadow-md"
                 onClick={openModal}
               >
                 Become Instructor

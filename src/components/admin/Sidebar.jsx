@@ -49,31 +49,31 @@ const Sidebar = () => {
               <img src={EduLogo} alt="Logo" className="h-16" />
             </Link>
           </div>
-          <div className="flex flex-col flex-grow mt-4 text-center">
-            <Link to="/admin/dashboard" className="px-6 py-4 hover:bg-gray-700">
+          <div className="flex flex-col text-gray-300 font-bold flex-grow mt-4 text-center">
+            <Link to="/admin/dashboard" className="px-6 py-4 hover:bg-gray-900">
               Dashboard
             </Link>
-            <Link to="/admin/student" className="px-6 py-4 hover:bg-gray-700">
+            <Link to="/admin/student" className="px-6 py-4 hover:bg-gray-900">
               Students
             </Link>
             <Link
               to="/admin/instructor"
-              className="px-6 py-4 hover:bg-gray-700"
+              className="px-6 py-4 hover:bg-gray-900"
             >
               Instructor
             </Link>
             <Link
               to="/admin/instructorRequest"
-              className="px-6 py-4 hover:bg-gray-700"
+              className="px-6 py-4 hover:bg-gray-900"
             >
               Instructor Request
             </Link>
-            <Link to="/admin/courses" className="px-6 py-4 hover:bg-gray-700">
+            <Link to="/admin/courses" className="px-6 py-4 hover:bg-gray-900">
               New Courses
             </Link>
           </div>
           <div className="mt-auto">
-            <div className="flex items-center justify-center h-16 hover:bg-gray-700 bg-black">
+            <div className="flex items-center justify-center text-gray-300 font-bold h-16 hover:bg-gray-900 bg-black">
               <MdLogout />
               <a href="/" onClick={handleLogout} className="text-sm ml-2">
                 Log Out

@@ -91,7 +91,7 @@ const AdminInstructor = () => {
           ) : error ? (
             <p className="text-red-500">Error: {error}</p>
           ) : instructors.length === 0 ? (
-            <EmtyData/>
+            <EmtyData message="No Instructors"/>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-200">

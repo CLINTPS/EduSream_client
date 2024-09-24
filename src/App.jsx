@@ -10,14 +10,18 @@ const LoadingScreen = lazy(()=>import("./components/lodingScreen/LoadingScreen")
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const SignUp = lazy(() => import("./pages/auth/SignUp"));
+const PaymentSuccess = lazy(()=>import("./pages/user/payment/PaymentSuccess"))
+const PaymentFailed = lazy(()=>import("./pages/user/payment/PaymentFailed"))
 
 //User
 const UserHome = lazy(() => import("./pages/user/UserHome"));
 const UserProfile = lazy(()=>import("./pages/user/UserProfile"));
 const UserEditProfile = lazy(()=>import("./pages/user/UserEditProfile"))
-const UserPurchasedCourses = lazy(()=>import("./pages/user/UserPurchasedCourses"))
+const UserEnrolledCourses = lazy(()=>import("./pages/user/UserEnrolledCourses"))
 const UserCoursePage = lazy(()=>import("./pages/user/UserCoursePage"))
 const CourseDetailPage = lazy(()=>import("./pages/user/CourseDetailPage"))
+const UserChatBoxPage = lazy(()=>import("./pages/user/UserChatBoxPage"))
+const UserSingleEnrolledCourses = lazy(()=>import("./pages/user/UserSingleEnrolledCourses"))
 
 //Admin
 const AdminDash = lazy(() => import("./pages/admin/AdminDash"));
@@ -63,6 +67,9 @@ function App() {
           <Route path="/index" element={user ? <Navigate to={getRedirectPath(user.role)} /> : <LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/course/paymentsuccess" element={<PaymentSuccess />} />
+          <Route path="/courses/paymentfailed" element={<PaymentFailed />} />
+
 
           {/* Protected routes */}
           <Route path="/home/*" element={user ?  <StudentRoute /> : <Navigate to="/index" />} />
@@ -95,9 +102,11 @@ function StudentRoute(){
       <Route path="/" element={<UserHome/>}/>
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="profile/edit" element={<UserEditProfile/>}/>
-      <Route path="purchasedCourses" element={<UserPurchasedCourses/>}/>
+      <Route path="enrolled-list" element={<UserEnrolledCourses/>}/>
       <Route path="AllCourses" element={<UserCoursePage/>}/>
       <Route path="course/:id" element={<CourseDetailPage />} />
+      <Route path="enrolled-list/singleView/:courseId" element={<UserSingleEnrolledCourses />} />
+      <Route path="chatBox" element={<UserChatBoxPage />} />
     </Routes>
   )
 }

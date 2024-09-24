@@ -2,8 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { FaEdit } from "react-icons/fa";
 import { formatDate } from '../../../../util/formatDate';
+import { useNavigate } from 'react-router-dom';
 
 const InstructorProfileList = () => {
+  const navigate= useNavigate()
   const { user } = useSelector((state) => state.user);
 
   if (!user) return <p>Loading...</p>;
@@ -18,7 +20,13 @@ const InstructorProfileList = () => {
     experience,
     socialMedia,
     role,
+    profit
   } = user;
+
+  const handleEditProfile = () => {
+    // console.log("Edit page check");
+    // navigate('/profile/edit');
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl">
@@ -34,12 +42,17 @@ const InstructorProfileList = () => {
               <h2 className="text-2xl font-bold text-gray-800">{firstName} {lastName}</h2>
               <p className="text-gray-500">{role}</p>
             </div>
-            <button className="flex items-center justify-center p-2 rounded-full hover:bg-black hover:text-white transition">
+            <button className="flex items-center justify-center p-2 rounded-full hover:bg-black hover:text-white transition"
+            onClick={handleEditProfile}
+            >
               <FaEdit size={26} />
             </button>
           </div>
           <p className="mt-4 text-gray-700">
             <span className="font-medium">Bio:</span> {profile.bio}
+          </p>
+          <p className="mt-4 text-gray-700">
+            <span className="font-medium">Profit :</span> ₹{profit}
           </p>
         </div>
       </div>

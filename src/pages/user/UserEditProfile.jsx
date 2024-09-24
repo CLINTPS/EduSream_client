@@ -50,7 +50,12 @@ const UserEditProfile = () => {
         if (resultAction.meta.requestStatus === "fulfilled") {
           await dispatch(getUserData());
           toast.success("Profile edited successfully.");
-          navigate('/home/profile');
+          if(user.role == "instructor"){
+            navigate('/instructor/profile');
+          }else{
+
+            navigate('/home/profile');
+          }
         } else {
           toast.error("Failed to update profile.");
           console.error("Failed to update profile:", resultAction.payload);
@@ -88,13 +93,17 @@ const UserEditProfile = () => {
   };
 
   const handleCancel = () => {
-    navigate('/home/profile');
+    if(user.role == "instructor"){
+      navigate('/instructor/profile');
+    }else{
+      navigate('/home/profile');
+    }
   };
 
   return (
     <div className="lg:flex ">
       <UserSideBar />
-      <div className="flex-grow p-6 bg-gray-300 lg:ml-64">
+      <div className="flex-grow p-6 h-screen bg-gray-300 lg:ml-64">
         <h2 className="text-3xl font-bold mb-2">User Edit Profile</h2>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <form onSubmit={formik.handleSubmit}>

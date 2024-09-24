@@ -30,6 +30,17 @@ const courseSchema = Yup.object().shape({
     //     then: Yup.number().required("Amount is required"),
     //   }),
     // }),
+    pricing: Yup.object().shape({
+      type: Yup.string().oneOf(['free', 'paid'], 'Invalid price type').required('Price type is required'),
+      amount: Yup.number().when('type', {
+        is: 'paid',
+        then: () => Yup.number()
+          .required('Price is required for paid courses')
+          .positive('Price must be a positive value'),
+        otherwise: () => Yup.number().test('is-zero', 'Price must be 0 for free courses', value => value === 0)
+      }),
+    }),
+
 });
 
 const InstractureAddCourses = () => {
@@ -311,7 +322,7 @@ const InstractureAddCourses = () => {
                 <Field
                   name="pricing.type"
                   as="select"
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                  className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm"
                 >
                   <option value="free">Free</option>
                   <option value="paid">Paid</option>
@@ -334,7 +345,7 @@ const InstractureAddCourses = () => {
                   <Field
                     name="pricing.amount"
                     type="number"
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm"
                   />
                   <ErrorMessage
                     name="pricing.amount"

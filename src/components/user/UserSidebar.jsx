@@ -47,23 +47,23 @@ const UserSideBar = () => {
               <img src={EduLogo} alt="Logo" className="h-16" />
             </Link>
           </div>
-          <div className="flex flex-col mt-4 flex-grow text-center">
-            <Link to="/home/profile" className="px-6 py-4 hover:bg-gray-700">
+          <div className="flex flex-col text-gray-300 font-bold mt-4 flex-grow text-center">
+            <Link to="/home/profile" className="px-6 py-4 hover:bg-gray-900">
               Profile
             </Link>
             <Link
-              to="/home/purchasedCourses"
-              className="px-6 py-4 hover:bg-gray-700"
+              to="/home/enrolled-list"
+              className="px-6 py-4 hover:bg-gray-900"
             >
-              Courses
+              Enrolled Courses
             </Link>
-            <Link to="#" className="px-6 py-4 hover:bg-gray-700">
-              Messages
+            <Link to="/home/chatBox" className="px-6 py-4 hover:bg-gray-900">
+              Chat box
             </Link>
           </div>
 
           <div className="mt-auto">
-            <div className="flex items-center justify-center h-16 hover:bg-gray-700 bg-black">
+            <div className="flex items-center text-gray-300 font-bold justify-center h-16 hover:bg-gray-900 bg-black">
               <MdLogout />
               <a href="/" onClick={handleLogout} className="text-sm ml-2">
                 Log Out

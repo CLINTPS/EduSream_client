@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EmtyData = () => {
+const EmtyData = ({message}) => {
     return (
         <div className="flex flex-col items-center justify-center h-[70vh] bg-gray-50">
           
@@ -21,7 +21,7 @@ const EmtyData = () => {
             </svg>
           </div>
           
-          <p className="mt-4 text-gray-700 text-lg font-medium">No Data Found</p>
+          <p className="mt-4 text-gray-700 text-lg font-medium">{message || "No data found"}</p>
         </div>
       );
 }

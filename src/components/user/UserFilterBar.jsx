@@ -2,16 +2,23 @@ import React, { useState } from "react";
 
 const UserFilterBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-6">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden text-blue-500 font-semibold mb-4 w-full text-left flex items-center justify-between"
+        className="lg:hidden bg-indigo-600 text-white font-semibold py-2 px-5 rounded-md w-full flex justify-between items-center"
       >
         <span>Filters</span>
         <svg
-          className={`w-5 h-5 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`w-5 h-5 transform transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -26,51 +33,65 @@ const UserFilterBar = () => {
         </svg>
       </button>
 
-      <div className={`lg:flex lg:items-center lg:justify-between ${isOpen ? "block" : "hidden lg:block"}`}>
-
-        <div className="mb-4 lg:mb-0 lg:flex-1">
-          <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-            Price
+      <div
+        className={`lg:flex lg:items-center lg:justify-between mt-6 lg:mt-0 ${
+          isOpen ? "block" : "hidden lg:block"
+        }`}
+      >
+        <div className="lg:flex-1 mb-5 lg:mb-0 lg:mr-6">
+          <label
+            htmlFor="type"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Course Type
           </label>
           <select
-            id="price"
-            name="price"
-            className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            id="type"
+            name="type"
+            className="block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-gray-50"
           >
-            <option value="">All Prices</option>
-            <option value="free">Free</option>
-            <option value="paid">Paid</option>
+            <option value="">All Courses</option>
+            <option value="free">Free Courses</option>
+            <option value="paid">Paid Courses</option>
           </select>
         </div>
 
-        <div className="mb-4 lg:mb-0 lg:flex-1 lg:mr-4">
-          <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="lg:flex-1 mb-5 lg:mb-0 lg:mr-6">
+          <label
+            htmlFor="language"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Language
           </label>
           <select
             id="language"
             name="language"
-            className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-gray-50"
           >
             <option value="">All Languages</option>
+            <option value="English">English</option>
+            <option value="Malayalam">Malayalam</option>
+            <option value="Hindi">Hindi</option>
           </select>
         </div>
 
-        <div className="mb-4 lg:mb-0 lg:flex-1 lg:mr-4">
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-            Price Range
-          </label>
-          <select
-            id="category"
-            name="category"
-            className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        <div className="lg:flex-1 mb-5 lg:mb-0">
+          <label
+            htmlFor="search"
+            className="block text-sm font-medium text-gray-700 mb-2"
           >
-            <option value="">Select Range</option>
-            <option value="">Low To High</option>
-            <option value="">High To Low</option>
-          </select>
+            Search
+          </label>
+          <input
+            type="text"
+            id="search"
+            name="search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search by title, keyword..."
+            className="block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-gray-50"
+          />
         </div>
-
       </div>
     </div>
   );

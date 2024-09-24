@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import UserNav from "../../components/user/UserNav";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCourses } from "../../redux/actions/userAction";
-import LodingData from "../../components/lodingData/LodingData";
+import LoadingData from "../../components/lodingData/LodingData"; 
 import UserFilterBar from "../../components/user/UserFilterBar";
 import { Link } from "react-router-dom";
 
 const UserCoursePage = () => {
   const { course, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     dispatch(getAllCourses());
@@ -18,7 +20,7 @@ const UserCoursePage = () => {
     return (
       <div>
         <UserNav />
-        <LodingData />
+        <LoadingData />
       </div>
     );
   }
@@ -31,6 +33,12 @@ const UserCoursePage = () => {
     );
   }
 
+  // Calculate current courses to display
+  const indexOfLastCourse = currentPage * itemsPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - itemsPerPage;
+  const currentCourses = course.slice(indexOfFirstCourse, indexOfLastCourse);
+  const totalPages = Math.ceil(course.length / itemsPerPage);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <UserNav />
@@ -42,8 +50,8 @@ const UserCoursePage = () => {
           All Courses
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {course && course.length > 0 ? (
-            course.map((item) => (
+          {currentCourses.length > 0 ? (
+            currentCourses.map((item) => (
               <div
                 key={item._id}
                 className="relative bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105"
@@ -70,7 +78,7 @@ const UserCoursePage = () => {
                       to={`/home/course/${item._id}`}
                       className="text-blue-500 hover:underline"
                     >
-                      View Details
+                      Details
                     </Link>
                   </div>
                 </div>
@@ -81,6 +89,20 @@ const UserCoursePage = () => {
               No courses available
             </p>
           )}
+        </div>
+        {/* Pagination */}
+        <div className="flex justify-center mt-8">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`mx-2 px-4 py-2 rounded-lg ${
+                currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+              } transition-colors duration-200`}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
     </div>

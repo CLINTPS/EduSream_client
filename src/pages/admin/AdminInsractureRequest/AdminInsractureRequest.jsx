@@ -96,7 +96,7 @@ const AdminInstructorRequest = () => {
           ) : error ? (
             <p className="text-red-500">Error: {error}</p>
           ) : instructorsPending.length === 0 ? (
-            <EmtyData />
+            <EmtyData message="No Instructor Requests"/>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-200">

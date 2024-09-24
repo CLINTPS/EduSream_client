@@ -135,7 +135,7 @@ export const getAllCourses = createAsyncThunk(
   "user/getAllCourses",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("Reached get getAllCourses");
+      // console.log("Reached get getAllCourses");
       
       const { data } = await axios.get(`${URL}/course/getAllCourses`, config);
       console.log("getAllCourses response : ",data);
@@ -149,9 +149,14 @@ export const getAllCourses = createAsyncThunk(
 
 export const getCourseById = createAsyncThunk(
   'user/getCourseById',
-  async (id, { rejectWithValue }) => {
+  async ({ id, userId }, { rejectWithValue }) => {
     try {
-      console.log('Reached getCourseById');
+      // console.log('Reached getCourseById');
+      const config = {
+        headers: {
+          'user-id': userId,
+        },
+      };
       const { data } = await axios.get(`${URL}/course/getCourse/${id}`, config);
       console.log('getCourseById response : ', data);
       return data;
@@ -161,3 +166,18 @@ export const getCourseById = createAsyncThunk(
     }
   }
 );
+
+export const fetchEnrolledCourses = createAsyncThunk(
+  'user/fetchEnrolledCourses',
+  async(userId,{rejectWithValue})=>{
+    try {
+      console.log("Reached fetchEnrolledCourses",userId);
+      const response = await axios.get(`${URL}/course/enrollment/${userId}`, config)
+      console.log("FetchEnrolledCourses",response);
+      return response.data
+    } catch (error) {
+      console.error('Error from fetchEnrolledCourses:', error);
+      return rejectWithValue(error.response?.data || 'An error occurred');
+    }
+  }
+)

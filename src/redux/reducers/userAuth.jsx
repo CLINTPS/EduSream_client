@@ -7,6 +7,7 @@ import {
   becomeInstructor,
   getAllCourses,
   getCourseById,
+  fetchEnrolledCourses
 } from "../actions/userAction";
 
 const userSlice = createSlice({
@@ -16,7 +17,8 @@ const userSlice = createSlice({
     user: null,
     error: null,
     course: [],
-    courseDetail:null
+    courseDetail:null,
+    enrolledCourses:[]
   },
   reducers: {
     updateUserOnOTPValidation: (state, { payload }) => {
@@ -107,11 +109,27 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.courseDetail = payload.data;
+        state.isEnrolled = payload.isEnrolled;
       })
       .addCase(getCourseById.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
         state.courseDetail = null;
+      })
+      .addCase(fetchEnrolledCourses.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchEnrolledCourses.fulfilled, (state, { payload }) => {
+        console.log("fbdsyfbdsfuo0",payload);
+        state.loading = false;
+        state.error = null;
+        state.enrolledCourses = payload.data;
+      })
+      .addCase(fetchEnrolledCourses.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+        state.enrolledCourses = null;
       });
   },
 });

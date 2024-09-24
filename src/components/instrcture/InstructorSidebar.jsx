@@ -49,29 +49,30 @@ const InstructorSidebar = () => {
             </Link>
           </div>
 
-          <div className="flex flex-col mt-4 flex-grow text-center">
+          <div className="flex flex-col mt-4 text-gray-300 font-bold flex-grow text-center">
+            <p></p>
             <Link
               to="/instructor/profile"
-              className="px-6 py-4 hover:bg-gray-700"
+              className="px-6 py-4  hover:bg-gray-900"
             >
               Profile
             </Link>
             <Link
               to="/instructor/dashboard"
-              className="px-6 py-4 hover:bg-gray-700"
+              className="px-6 py-4 hover:bg-gray-900"
             >
               Dashboard
             </Link>
             <Link
               to="/instructor/courses"
-              className="px-6 py-4 hover:bg-gray-700"
+              className="px-6 py-4 hover:bg-gray-900"
             >
               Courses
             </Link>
           </div>
 
           <div className="mt-auto">
-            <div className="flex items-center justify-center h-16 hover:bg-gray-700 bg-black">
+            <div className="flex items-center text-gray-300 font-bold justify-center h-16 hover:bg-gray-900 bg-black">
               <MdLogout />
               <a href="/" onClick={handleLogout} className="text-sm ml-2">
                 Log Out

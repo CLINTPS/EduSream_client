@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { multiForm, config } from "../../common/configurations";
+import { multiForm, config, appJson } from "../../common/configurations";
 import { URL } from "../../common/api";
 
 export const signup = createAsyncThunk(
@@ -38,6 +38,25 @@ export const login = createAsyncThunk(
     } catch (error) {
       console.error("Error from login:", error);
       return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (userEmail, { rejectWithValue }) => {
+    try {
+      console.log("Redux Action, forgotPassword: ", userEmail);
+            const { data } = await axios.post(
+        `${URL}/auth/forgot-password`,
+        { email: userEmail }
+      );
+      
+      console.log("Forgot Password response: ", data);
+      return data;
+    } catch (error) {
+      console.error("Error from forgotPassword", error.response.data.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -131,41 +150,9 @@ export const userEditProfile = createAsyncThunk(
 );
 
 
-export const getAllCourses = createAsyncThunk(
-  "user/getAllCourses",
-  async (_, { rejectWithValue }) => {
-    try {
-      // console.log("Reached get getAllCourses");
-      
-      const { data } = await axios.get(`${URL}/course/getAllCourses`, config);
-      console.log("getAllCourses response : ",data);
-      return data;
-    } catch (error) {
-      console.error("Error from getAllCourses:", error);
-      return rejectWithValue(error.response?.data || "An error occurred");
-    }
-  }
-);
 
-export const getCourseById = createAsyncThunk(
-  'user/getCourseById',
-  async ({ id, userId }, { rejectWithValue }) => {
-    try {
-      // console.log('Reached getCourseById');
-      const config = {
-        headers: {
-          'user-id': userId,
-        },
-      };
-      const { data } = await axios.get(`${URL}/course/getCourse/${id}`, config);
-      console.log('getCourseById response : ', data);
-      return data;
-    } catch (error) {
-      console.error('Error from getCourseById:', error);
-      return rejectWithValue(error.response?.data || 'An error occurred');
-    }
-  }
-);
+
+
 
 export const fetchEnrolledCourses = createAsyncThunk(
   'user/fetchEnrolledCourses',

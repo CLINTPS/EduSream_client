@@ -92,7 +92,7 @@ const OtpPage = ({ email, signupDispatch }) => {
   
 
   return (
-    <div className="flex justify-center items-center h-screen w-full">
+    <div className="flex justify-center items-center w-full">
       <div className="bg-white p-8 rounded shadow-md">
         <h2 className="text-2xl font-bold mb-4">Enter OTP</h2>
         <div className="flex justify-center items-center space-x-4">

@@ -36,7 +36,7 @@ const PaymentFailed = () => {
             onClick={handleRetry}
             className="mt-6 bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
           >
-            Retry Payment
+            Back To Home
           </button>
         </div>
       </div>

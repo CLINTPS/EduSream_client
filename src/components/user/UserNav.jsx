@@ -51,7 +51,7 @@ const UserNav = () => {
             <Link to="/" className="text-black hover:text-black hover:underline">
               Home
             </Link>
-            <Link to="/home/AllCourses" className="text-black hover:text-black hover:underline">
+            <Link to="/AllCourses" className="text-black hover:text-black hover:underline">
               Courses
             </Link>
             <Link to="#" className="text-black hover:text-black hover:underline">
@@ -74,7 +74,7 @@ const UserNav = () => {
             <div className="relative">
               <button className="focus:outline-none flex items-center space-x-1 border-2 border-gray-300 rounded-3xl" onClick={toggleProfileMenu}>
                 <img
-                  src={user.profile?.avatar || "https://via.placeholder.com/150"}
+                  src={user?.profile?.avatar || "https://via.placeholder.com/150"}
                   alt="Profile"
                   className="h-9 w-9 rounded-full border-2 border-gray-200"
                 />
@@ -106,7 +106,7 @@ const UserNav = () => {
           <Link to="/" className="block text-black hover:text-black hover:underline p-2">
             Home
           </Link>
-          <Link to="#" className="block text-black hover:text-black hover:underline p-2">
+          <Link to="/home/AllCourses" className="block text-black hover:text-black hover:underline p-2">
             Courses
           </Link>
           <Link to="#" className="block text-black hover:text-black hover:underline p-2">

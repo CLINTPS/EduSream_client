@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LodingData from "../../components/lodingData/LodingData";
-import { getCourseById } from "../../redux/actions/userAction";
+import { getCourseById } from "../../redux/actions/courseAction";
 import UserNav from "../../components/user/UserNav";
 import axios from "axios";
 import { URL } from "../../common/api";
@@ -10,12 +10,12 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const CourseDetailPage = () => {
   const { id } = useParams();
-  const { courseDetail, loading, error, isEnrolled  } = useSelector((state) => state.user);
+  const { courseDetail, loading, error, isEnrolled } = useSelector(
+    (state) => state.course
+  );
   const { user } = useSelector((state) => state.user);
-  // console.log("User...........",user);
-  console.log("courseDetail...........",courseDetail);
-  console.log("isEnrolled...........",isEnrolled);
-
+  const [expandedLesson, setExpandedLesson] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,6 +23,10 @@ const CourseDetailPage = () => {
       dispatch(getCourseById({ id, userId: user._id }));
     }
   }, [id, dispatch]);
+
+  const handleToggleLesson = (lessonId) => {
+    setExpandedLesson((prevLessonId) => (prevLessonId === lessonId ? null : lessonId));
+  };
 
   if (loading) {
     return (
@@ -45,7 +49,6 @@ const CourseDetailPage = () => {
     const stripe = await loadStripe(
       "pk_test_51Q0dRxRxGaFOTDjM5z8L1nGrgLNv8iGeHCAiup10oiuKD7P7DI9Pc0amB56U42gppYWDw2wAlwVlzR06fnkrxDQO00lSE0JCDu"
     );
-    console.log("check handle payment");
 
     try {
       const data = {
@@ -56,13 +59,11 @@ const CourseDetailPage = () => {
         instructorRef: courseDetail?.instructorRef,
         courseId: courseDetail?._id,
       };
-      console.log("DATA>>>>>>>>>>>>>", data);
 
       const response = await axios.post(
         `${URL}/payment/create-checkout-session`,
         data
       );
-      console.log("Response stript...", response);
 
       const sessionId = response.data.sessionId;
       const { error } = await stripe.redirectToCheckout({
@@ -72,7 +73,6 @@ const CourseDetailPage = () => {
       if (error) {
         console.error("Stripe checkout error:", error);
       }
-      
     } catch (error) {
       console.error("Error creating session", error);
     }
@@ -135,10 +135,15 @@ const CourseDetailPage = () => {
               )}
             </div>
 
-            {/* Conditionally show the "Buy Now" button or "Already Enrolled" */}
             {isEnrolled ? (
               <div className="text-center text-green-500 text-xl font-semibold">
                 Already Enrolled
+                <button
+                  onClick={() => navigate("/home/enrolled-list")}
+                  className="ml-2 text-1xl"
+                >
+                  ➡
+                </button>
               </div>
             ) : (
               courseDetail.pricing.type === "paid" && (
@@ -160,26 +165,32 @@ const CourseDetailPage = () => {
                 </h3>
                 <ul className="divide-y divide-gray-200">
                   {courseDetail.lessons.map((lesson) => (
-                    <li key={lesson._id} className="py-6">
+                    <li key={lesson._id} className="py-4">
                       <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="text-lg font-bold text-gray-700">
-                            <strong>Title: </strong>
-                            {lesson.title}
-                          </h4>
+                        <h4 className="text-lg font-bold text-gray-700">
+                          {lesson.title}
+                        </h4>
+
+                        <button
+                          className="text-gray-600 text-2xl focus:outline-none"
+                          onClick={() => handleToggleLesson(lesson._id)}
+                        >
+                          {expandedLesson === lesson._id ? "▲" : "▼"}
+                        </button>
+                      </div>
+
+                      {expandedLesson === lesson._id && (
+                        <div className="mt-4">
                           <p className="text-gray-600">
-                            <strong>Description: </strong>
-                            {lesson.description}
+                            <strong>Description:</strong> {lesson.description}
                           </p>
                           <p className="text-sm text-gray-500">
                             Lesson No: {lesson.lessonNumber}
                           </p>
-                        </div>
-                        {lesson.lessonVideo && (
-                          <div className="ml-4">
+                          {lesson.lessonVideo && (
                             <video
                               controls
-                              className="w-96 rounded-lg shadow-md"
+                              className="w-full mt-4 rounded-lg shadow-md"
                             >
                               <source
                                 src={lesson.lessonVideo}
@@ -187,9 +198,9 @@ const CourseDetailPage = () => {
                               />
                               Your browser does not support the video tag.
                             </video>
-                          </div>
-                        )}
-                      </div>
+                          )}
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

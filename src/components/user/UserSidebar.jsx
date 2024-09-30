@@ -57,8 +57,8 @@ const UserSideBar = () => {
             >
               Enrolled Courses
             </Link>
-            <Link to="/home/chatBox" className="px-6 py-4 hover:bg-gray-900">
-              Chat box
+            <Link to="/home/chat" className="px-6 py-4 hover:bg-gray-900">
+              Message
             </Link>
           </div>
 

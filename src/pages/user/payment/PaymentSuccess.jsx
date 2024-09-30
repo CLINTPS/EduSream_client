@@ -7,6 +7,10 @@ const PaymentSuccess = () => {
     const handleGoHome = () => {
       navigate('/');
     };
+
+    const handleEnrolledList = ()=> {
+      navigate('/home/enrolled-list')
+    }
     
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-50">
@@ -38,6 +42,12 @@ const PaymentSuccess = () => {
             className="mt-6 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition"
           >
             Go to Home
+          </button>
+          <button
+            onClick={handleEnrolledList}
+            className="mt-6 ml-1 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition"
+          >
+            Enrolled List
           </button>
         </div>
       </div>

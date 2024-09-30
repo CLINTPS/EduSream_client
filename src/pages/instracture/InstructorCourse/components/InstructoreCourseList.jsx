@@ -10,7 +10,7 @@ const InstructorCourseList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { courses, loading, error } = useSelector((state) => state.course);
+  const { instuctoreCourses, loading, error } = useSelector((state) => state.course);
 
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 3;
@@ -45,7 +45,7 @@ const InstructorCourseList = () => {
     return <div className="text-red-500 text-center">{`Error: ${error}`}</div>;
   }
 
-  const coursesData = Array.isArray(courses) ? courses : courses?.data || [];
+  const coursesData = Array.isArray(instuctoreCourses) ? instuctoreCourses : instuctoreCourses?.data || [];
   const totalPages = Math.ceil(coursesData.length / coursesPerPage);
 
   const handlePreviousPage = () => {
@@ -69,7 +69,7 @@ const InstructorCourseList = () => {
   return (
     <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900">My Courses</h2>
+        <h2 className="text-3xl font-bold text-gray-900">All Courses</h2>
         <button
           className="flex items-center bg-gray-500 text-white py-2 px-4 rounded-full shadow hover:bg-gray-700 transition duration-300"
           onClick={handleAddPage}

@@ -92,7 +92,8 @@ const ProfileLists = () => {
         <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl relative">
           <button className="absolute top-4 right-4 px-4 py-2 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition"
           onClick={handleEditProfile}>
-            <FaEdit />
+           Add more details or edit
+            {/* <FaEdit /> */}
           </button>
           
           <div className="bg-gradient-to-r from-gray-200 to-gray-300 p-6 flex flex-col items-center">

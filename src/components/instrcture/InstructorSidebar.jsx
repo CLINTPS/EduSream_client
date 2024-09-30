@@ -69,6 +69,12 @@ const InstructorSidebar = () => {
             >
               Courses
             </Link>
+            <Link
+              to="/instructor/chat"
+              className="px-6 py-4 hover:bg-gray-900"
+            >
+              Message
+            </Link>
           </div>
 
           <div className="mt-auto">

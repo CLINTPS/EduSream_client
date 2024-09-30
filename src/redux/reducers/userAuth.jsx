@@ -2,11 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   signup,
   login,
+  forgotPassword,
   getUserData,
   googleSignup,
   becomeInstructor,
-  getAllCourses,
-  getCourseById,
   fetchEnrolledCourses
 } from "../actions/userAction";
 
@@ -16,8 +15,6 @@ const userSlice = createSlice({
     loading: false,
     user: null,
     error: null,
-    course: [],
-    courseDetail:null,
     enrolledCourses:[]
   },
   reducers: {
@@ -54,6 +51,14 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state, { payload }) => {
         (state.loading = false), (state.error = payload), (state.user = null);
       })
+      .addCase(forgotPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
       .addCase(getUserData.pending, (state) => {
         state.loading = true;
       })
@@ -88,34 +93,23 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = payload;
       })
-      .addCase(getAllCourses.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getAllCourses.fulfilled, (state, { payload }) => {
-        (state.loading = false),
-        (state.error = null),
-        (state.course = payload.data.allData);
-      })
-      .addCase(getAllCourses.rejected, (state, { payload }) => {
-        (state.loading = false), (state.error = payload), (state.course = null);
-      })
-      .addCase(getCourseById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getCourseById.fulfilled, (state, { payload }) => {
-        console.log("fbdsyfbdsfuo0",payload);
-        state.loading = false;
-        state.error = null;
-        state.courseDetail = payload.data;
-        state.isEnrolled = payload.isEnrolled;
-      })
-      .addCase(getCourseById.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.error = payload;
-        state.courseDetail = null;
-      })
+      
+      // .addCase(getCourseById.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(getCourseById.fulfilled, (state, { payload }) => {
+      //   console.log("fbdsyfbdsfuo0",payload);
+      //   state.loading = false;
+      //   state.error = null;
+      //   state.courseDetail = payload.data;
+      //   state.isEnrolled = payload.isEnrolled;
+      // })
+      // .addCase(getCourseById.rejected, (state, { payload }) => {
+      //   state.loading = false;
+      //   state.error = payload;
+      //   state.courseDetail = null;
+      // })
       .addCase(fetchEnrolledCourses.pending, (state) => {
         state.loading = true;
         state.error = null;

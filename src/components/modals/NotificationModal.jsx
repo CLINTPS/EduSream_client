@@ -14,13 +14,18 @@ const NotificationModal = ({ isOpen, onClose }) => {
             &times;
           </button>
         </div>
-        <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="mt-4 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-          >
-            Close
-          </button>
+        <div className="flex-grow">
+          <div className="flex justify-center">
+            <h1>Empty</h1>
+          </div>
+          <div className="flex justify-end">
+            <button
+              onClick={onClose}
+              className="mt-4 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

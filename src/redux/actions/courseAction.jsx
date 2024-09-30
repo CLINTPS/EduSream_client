@@ -1,8 +1,43 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { URL } from "../../common/api";
 import axios from "axios";
-import { config } from "../../common/configurations";
+import { appJson, config } from "../../common/configurations";
 
+export const getAllCourses = createAsyncThunk(
+    "user/getAllCourses",
+    async (_, { rejectWithValue }) => {
+      try {
+        // console.log("Reached get getAllCourses");
+        
+        const { data } = await axios.get(`${URL}/course/getAllCourses`, appJson);
+        console.log("getAllCourses response : ",data);
+        return data;
+      } catch (error) {
+        console.error("Error from getAllCourses:", error);
+        return rejectWithValue(error.response?.data || "An error occurred");
+      }
+    }
+  );
+
+  export const getCourseById = createAsyncThunk(
+    'user/getCourseById',
+    async ({ id, userId }, { rejectWithValue }) => {
+      try {
+        // console.log('Reached getCourseById');
+        const config = {
+          headers: {
+            'user-id': userId,
+          },
+        };
+        const { data } = await axios.get(`${URL}/course/getCourse/${id}`, config);
+        console.log('getCourseById response : ', data);
+        return data;
+      } catch (error) {
+        console.error('Error from getCourseById:', error);
+        return rejectWithValue(error.response?.data || 'An error occurred');
+      }
+    }
+  );
 
 export const addNewCourse = createAsyncThunk("instructore/create-course",
     async (courseData,{rejectWithValue})=>{

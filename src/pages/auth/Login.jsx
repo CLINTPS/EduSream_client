@@ -195,6 +195,15 @@ const Login = () => {
                   Sign Up
                 </a>
               </p>
+              <p className="text-gray-600 mt-4">
+                Or ?{" "}
+                <a
+                  href="/forgot-password"
+                  className="text-blue-500 hover:text-blue-700 font-semibold"
+                >
+                  Forgot Password
+                </a>
+              </p>
               <p className="text-gray-600 mb-4 mt-3">Or sign up with</p>
               <div className="flex justify-center">
               <GoogleLogin

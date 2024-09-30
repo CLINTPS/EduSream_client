@@ -7,11 +7,13 @@ import { getUserData } from "./redux/actions/userAction";
 
 //Defalt pages
 const LoadingScreen = lazy(()=>import("./components/lodingScreen/LoadingScreen"))
-const LandingPage = lazy(() => import("./pages/LandingPage"));
+const LandingPage = lazy(() => import("./pages/guest/LandingPage"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const SignUp = lazy(() => import("./pages/auth/SignUp"));
+const ForgotPassword = lazy(()=>import("./pages/auth/ForgotPassword"))
 const PaymentSuccess = lazy(()=>import("./pages/user/payment/PaymentSuccess"))
 const PaymentFailed = lazy(()=>import("./pages/user/payment/PaymentFailed"))
+const GustCoursePage = lazy(()=>import("./pages/guest/GustCoursePage"))
 
 //User
 const UserHome = lazy(() => import("./pages/user/UserHome"));
@@ -20,7 +22,7 @@ const UserEditProfile = lazy(()=>import("./pages/user/UserEditProfile"))
 const UserEnrolledCourses = lazy(()=>import("./pages/user/UserEnrolledCourses"))
 const UserCoursePage = lazy(()=>import("./pages/user/UserCoursePage"))
 const CourseDetailPage = lazy(()=>import("./pages/user/CourseDetailPage"))
-const UserChatBoxPage = lazy(()=>import("./pages/user/UserChatBoxPage"))
+const UserChat = lazy(()=>import("./pages/user/UserChatBoxPage"))
 const UserSingleEnrolledCourses = lazy(()=>import("./pages/user/UserSingleEnrolledCourses"))
 
 //Admin
@@ -41,6 +43,7 @@ const InstractureCourses = lazy(() => import("./pages/instracture/InstructorCour
 const InstracturAddCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureAddCourses"));
 const InstracturEditCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureEditCourses"));
 const InstractureSingleCourses = lazy(() => import("./pages/instracture/InstructorCourse/InstractureSingleCourses"));
+const InstractureChat = lazy(()=>import("./pages/instracture/chat/InstructorChat"))
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -67,8 +70,11 @@ function App() {
           <Route path="/index" element={user ? <Navigate to={getRedirectPath(user.role)} /> : <LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/course/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/courses/paymentfailed" element={<PaymentFailed />} />
+          <Route path="/AllCourses" element={<UserCoursePage />} />
+
 
 
           {/* Protected routes */}
@@ -103,10 +109,10 @@ function StudentRoute(){
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="profile/edit" element={<UserEditProfile/>}/>
       <Route path="enrolled-list" element={<UserEnrolledCourses/>}/>
-      <Route path="AllCourses" element={<UserCoursePage/>}/>
+      {/* <Route path="AllCourses" element={<UserCoursePage/>}/> */}
       <Route path="course/:id" element={<CourseDetailPage />} />
       <Route path="enrolled-list/singleView/:courseId" element={<UserSingleEnrolledCourses />} />
-      <Route path="chatBox" element={<UserChatBoxPage />} />
+      <Route path="chat" element={<UserChat />} />
     </Routes>
   )
 }
@@ -137,6 +143,7 @@ function InstructorRoutes() {
       <Route path="courses/add" element={<InstracturAddCourses />} />
       <Route path="courses/edit/:id" element={<InstracturEditCourses />} />
       <Route path="courses/singleView/:id" element={<InstractureSingleCourses />} />
+      <Route path="chat" element={<InstractureChat />} />
     </Routes>
   );
 }

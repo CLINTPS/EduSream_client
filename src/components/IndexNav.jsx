@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import EduLogo from '../../src/assets/logos/Es-old-b&w.png'
+import ContactModal from '../components/modals/ContactModal';
 
 const IndexNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
+    <>
     <nav className="bg-gradient-to-b bg-gray-200 p-4">
       <div className="container-flex px-6 mx-auto flex justify-between items-center">
       <a href="/" className="flex items-center text-white text-2xl font-bold">
@@ -16,9 +23,11 @@ const IndexNav = () => {
         </a>
         <div className="hidden md:flex items-center font-semibold space-x-4">
           <a href="/" className="text-black hover:text-black hover:underline">Home</a>
-          <a href="#" className="text-black hover:text-black hover:underline">Courses</a>
-          <a href="/services" className="text-black hover:text-black hover:underline">About</a>
-          <a href="/contact" className="text-black hover:text-black hover:underline">Contact</a>
+          <a href="/AllCourses" className="text-black hover:text-black hover:underline">Courses</a>
+          <a href="" className="text-black hover:text-black hover:underline">About</a>
+          <button onClick={toggleModal} className="text-black hover:text-black hover:underline">
+              Contact
+          </button>
           <a href="/login" className="text-black bg-gray-300 hover:bg-gray-400 rounded-2xl px-6 py-1.5">Login</a>
           <a href="/signup" className="text-black bg-gray-300 hover:bg-gray-400 rounded-2xl px-4 py-1.5">Signup</a>
         </div>
@@ -39,6 +48,13 @@ const IndexNav = () => {
         <a href="/signup" className="block text-black bg-gray-300 hover:bg-gray-400 rounded p-2 mt-2">Signup</a>
       </div>
     </nav>
+    <ContactModal isOpen={isModalOpen} onClose={toggleModal} title="Company Details">
+    <p>Company Name: EduStream</p>
+    <p>Email: contact@edustream.com</p>
+    <p>Phone: +1 234 567 890</p>
+    <p>Address: 123 Learning Lane, Knowledge City, EDU 45678</p>
+  </ContactModal>
+  </>
   );
 };
 

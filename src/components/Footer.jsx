@@ -3,7 +3,7 @@ import Logo from '../assets/logos/Es-old.png'
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-8 md:mt-20">
+    <footer className="bg-black text-white py-8 md:mt-">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center md:px-44 md:py-4">
         <div className="flex flex-col items-center md:items-start mb-4 md:mb-0 md:w-1/3">
           <img src={Logo} alt="EduStream Logo" className="h-28" />
@@ -21,9 +21,9 @@ const Footer = () => {
             </button>
           </div>
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 text-sm md:mt-5">
-            <a href="#" className="hover:underline">Careers</a>
-            <a href="#" className="hover:underline">Privacy Policy</a>
-            <a href="#" className="hover:underline">Terms & Conditions</a>
+            <p className="hover:underline">Careers</p>
+            <p className="hover:underline">Privacy Policy</p>
+            <p className="hover:underline">Terms & Conditions</p>
           </div>
           <div className="text-sm mt-4 md:mt-5">
             © 2024 Education Stream Technologies Pvt Ltd

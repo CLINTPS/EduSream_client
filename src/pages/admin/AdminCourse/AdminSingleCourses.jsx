@@ -89,6 +89,10 @@ const AdminSingleCourses = () => {
               </h3>
               <ul className="space-y-2 text-gray-700">
                 <li>
+                  <span className="font-medium">Category:</span>{" "}
+                  {course.category}
+                </li>
+                <li>
                   <span className="font-medium">Language:</span>{" "}
                   {course.language}
                 </li>

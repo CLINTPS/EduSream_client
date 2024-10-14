@@ -99,6 +99,9 @@ const InstructorCourseList = () => {
                 <p className="text-gray-600 mb-4 line-clamp-3">
                   {course.description}
                 </p>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  Category : {course.category || "N/A"}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full">
                     {course.language}
@@ -127,6 +130,7 @@ const InstructorCourseList = () => {
                       ? "Active"
                       : "Pending"}
                   </span>
+                  
                 </div>
 
                 <div className="flex justify-end">

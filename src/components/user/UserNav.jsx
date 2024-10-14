@@ -65,7 +65,7 @@ const UserNav = () => {
               onClick={toggleNotificationModal}
               className="relative focus:outline-none"
             >
-              <IoMdNotificationsOutline className="text-2xl text-black" />
+              {/* <IoMdNotificationsOutline className="text-2xl text-black" /> */}
               {/* <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
                 3
               </span> */}

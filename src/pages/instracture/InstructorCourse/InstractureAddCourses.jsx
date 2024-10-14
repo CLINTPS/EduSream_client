@@ -14,7 +14,8 @@ const courseSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
   thumbnailImage: Yup.string().required("Thumbnail image is required"),
   thumbnailVideo: Yup.string().required("Thumbnail Video is required"),
-  language: Yup.string(),
+  category: Yup.string().required("Category is required"),
+  language: Yup.string().required("Language is required"),
   lessons: Yup.array().of(
     Yup.object().shape({
       lessonNumber: Yup.string().required("Lesson number is required"),
@@ -88,6 +89,7 @@ const InstractureAddCourses = () => {
             description: "",
             thumbnailImage: "",
             thumbnailVideo: "",
+            category:"",
             language: "english",
             lessons: [
               {
@@ -138,7 +140,7 @@ const InstractureAddCourses = () => {
                   name="description"
                   as="textarea"
                   placeholder="Course Description"
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                  className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm"
                 />
                 <ErrorMessage
                   name="description"
@@ -158,15 +160,15 @@ const InstractureAddCourses = () => {
                 setFieldValue={setFieldValue}
               />
 
-              {/* <div className="mb-4">
+              <div className="mb-4">
                 <label
-                  htmlFor="categoryRef"
+                  htmlFor="category"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Category
+                  Course Category
                 </label>
                 <Field
-                  name="categoryRef"
+                  name="category"
                   as="select"
                   className="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm"
                 >
@@ -176,18 +178,18 @@ const InstractureAddCourses = () => {
                   <option value="Post-graduate">Post-graduate</option>
                 </Field>
                 <ErrorMessage
-                  name="categoryRef"
+                  name="category"
                   component="div"
                   className="text-red-500 text-sm"
                 />
-              </div> */}
+              </div>
 
               <div className="mb-4">
                 <label
                   htmlFor="language"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Category
+                  Course Language
                 </label>
                 <Field
                   name="language"

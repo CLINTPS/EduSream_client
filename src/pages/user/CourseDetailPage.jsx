@@ -7,6 +7,7 @@ import UserNav from "../../components/user/UserNav";
 import axios from "axios";
 import { URL } from "../../common/api";
 import { loadStripe } from "@stripe/stripe-js";
+import IndexNav from "../../components/IndexNav";
 
 const CourseDetailPage = () => {
   const { id } = useParams();
@@ -19,13 +20,16 @@ const CourseDetailPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user && id) {
-      dispatch(getCourseById({ id, userId: user._id }));
+    if (id) {
+      const userId = user?._id || null;
+      dispatch(getCourseById({ id, userId }));
     }
   }, [id, dispatch]);
 
   const handleToggleLesson = (lessonId) => {
-    setExpandedLesson((prevLessonId) => (prevLessonId === lessonId ? null : lessonId));
+    setExpandedLesson((prevLessonId) =>
+      prevLessonId === lessonId ? null : lessonId
+    );
   };
 
   if (loading) {
@@ -80,7 +84,7 @@ const CourseDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <UserNav />
+      {user ? <UserNav /> : <IndexNav />}
 
       <div className="p-8 max-w-5xl mx-auto">
         {courseDetail ? (
@@ -135,22 +139,37 @@ const CourseDetailPage = () => {
               )}
             </div>
 
-            {isEnrolled ? (
-              <div className="text-center text-green-500 text-xl font-semibold">
-                Already Enrolled
-                <button
-                  onClick={() => navigate("/home/enrolled-list")}
-                  className="ml-2 text-1xl"
-                >
-                  ➡
-                </button>
-              </div>
+            {user ? (
+              <>
+                {isEnrolled ? (
+                  <div className="text-center text-green-500 text-xl font-semibold">
+                    Already Enrolled
+                    <button
+                      onClick={() => navigate("/home/enrolled-list")}
+                      className="ml-2 text-1xl"
+                    >
+                      ➡
+                    </button>
+                  </div>
+                ) : (
+                  courseDetail.pricing.type === "paid" && (
+                    <div className="flex items-center justify-end">
+                      <button
+                        className="bg-gray-300 py-2 px-4 rounded-lg text-black"
+                        onClick={handlePayment}
+                      >
+                        Enroll Now
+                      </button>
+                    </div>
+                  )
+                )}
+              </>
             ) : (
               courseDetail.pricing.type === "paid" && (
                 <div className="flex items-center justify-end">
                   <button
-                    className="bg-gray-600 py-2 px-4 rounded-lg text-white"
-                    onClick={handlePayment}
+                    onClick={() => navigate("/login")}
+                    className="bg-gray-300 py-2 px-4 rounded-lg text-black"
                   >
                     Enroll Now
                   </button>

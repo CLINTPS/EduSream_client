@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { FaEdit } from "react-icons/fa";
 import { formatDate } from '../../../../util/formatDate';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 const InstructorProfileList = () => {
   const navigate= useNavigate()
@@ -88,19 +88,19 @@ const InstructorProfileList = () => {
             <h3 className="font-semibold text-gray-700 mb-2">Social Media</h3>
             <div className="flex space-x-4">
               {socialMedia.linkedIn && (
-                <a href={socialMedia.linkedIn} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                <Link to={socialMedia.linkedIn} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
                   LinkedIn
-                </a>
+                </Link>
               )}
               {socialMedia.instagram && (
-                <a href={socialMedia.instagram} className="text-pink-500 hover:underline" target="_blank" rel="noopener noreferrer">
+                <Link to={socialMedia.instagram} className="text-pink-500 hover:underline" target="_blank" rel="noopener noreferrer">
                   Instagram
-                </a>
+                </Link>
               )}
               {socialMedia.facebook && (
-                <a href={socialMedia.facebook} className="text-blue-800 hover:underline" target="_blank" rel="noopener noreferrer">
+                <Link to={socialMedia.facebook} className="text-blue-800 hover:underline" target="_blank" rel="noopener noreferrer">
                   Facebook
-                </a>
+                </Link>
               )}
             </div>
           </div>

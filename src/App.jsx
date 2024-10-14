@@ -20,6 +20,7 @@ const UserHome = lazy(() => import("./pages/user/UserHome"));
 const UserProfile = lazy(()=>import("./pages/user/UserProfile"));
 const UserEditProfile = lazy(()=>import("./pages/user/UserEditProfile"))
 const UserEnrolledCourses = lazy(()=>import("./pages/user/UserEnrolledCourses"))
+const UserSuggestionCourse = lazy(()=>import("./pages/user/UserSuggestionCourse"))
 const UserCoursePage = lazy(()=>import("./pages/user/UserCoursePage"))
 const CourseDetailPage = lazy(()=>import("./pages/user/CourseDetailPage"))
 const UserChat = lazy(()=>import("./pages/user/UserChatBoxPage"))
@@ -67,13 +68,15 @@ function App() {
           <Route path="/" element={user ? <Navigate to={getRedirectPath(user.role)} /> : <LandingPage />} />
 
           {/* Public routes  */}
-          <Route path="/index" element={user ? <Navigate to={getRedirectPath(user.role)} /> : <LandingPage />} />
+          {/* <Route path="/index" element={user ? <Navigate to={getRedirectPath(user.role)} /> : <LandingPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/course/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/courses/paymentfailed" element={<PaymentFailed />} />
           <Route path="/AllCourses" element={<UserCoursePage />} />
+          <Route path="/course/:id" element={<CourseDetailPage />} />
+
 
 
 
@@ -109,8 +112,7 @@ function StudentRoute(){
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="profile/edit" element={<UserEditProfile/>}/>
       <Route path="enrolled-list" element={<UserEnrolledCourses/>}/>
-      {/* <Route path="AllCourses" element={<UserCoursePage/>}/> */}
-      <Route path="course/:id" element={<CourseDetailPage />} />
+      <Route path="suggested-list" element={<UserSuggestionCourse/>}/>
       <Route path="enrolled-list/singleView/:courseId" element={<UserSingleEnrolledCourses />} />
       <Route path="chat" element={<UserChat />} />
     </Routes>

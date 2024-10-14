@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import InstructorSidebar from "../../../components/instrcture/InstructorSidebar";
 import { useSelector } from "react-redux";
+import AddExamModal from "../../../components/modals/AddExamModal";
+import ViewExamModal from "../../../components/modals/ViewExamModal";
+import EditExamModal from "../../../components/modals/EditExamModal";
+import { URL } from "../../../common/api";
+import axios from "axios";
+import { config } from "../../../common/configurations";
+import toast from "react-hot-toast";
 
 const InstractureSingleCourses = () => {
   const navigate = useNavigate();
@@ -9,8 +16,65 @@ const InstractureSingleCourses = () => {
   const location = useLocation();
   const { course } = location.state;
 
+  const [isAddExamModalOpen, setIsAddExamModalOpen] = useState(false);
+  const [isViewExamModalOpen, setIsViewExamModalOpen] = useState(false);
+  const [isEditExamModalOpen, setIsEditExamModalOpen] = useState(false);
+  const [assessmentExists, setAssessmentExists] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [examDetails, setExamDetails] = useState(null);
+
+
+  useEffect(() => {
+    const checkExam = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${URL}/course/check-Assessment/${course._id}`,
+          config
+        );
+        console.log("Assessment responsre..", response);
+
+        if (response.data.success) {
+          setAssessmentExists(true);
+          setExamDetails(response.data.data);
+        } else {
+          setAssessmentExists(false);
+        }
+      } catch (error) {
+        console.error("Error checking exam existence", error);
+        setAssessmentExists(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkExam();
+  }, [course._id]);
+
   const handleEdit = (course) => {
     navigate(`/instructor/courses/edit/${course._id}`, { state: { course } });
+  };
+
+  const handleAddExam = () => {
+    setIsAddExamModalOpen(true);
+  };
+
+  const handleModalSubmit = (examData) => {
+    // console.log("Exam Data:", examData);
+    setAssessmentExists(true);
+    setExamDetails(examData);
+  };
+
+  const handleViewExam = () => {
+    if (examDetails) {
+      setIsViewExamModalOpen(true);
+    }
+  };
+
+  const handleEditExam = () => {
+    if (examDetails) {
+      setIsEditExamModalOpen(true);
+    }
   };
 
   return (
@@ -48,6 +112,10 @@ const InstractureSingleCourses = () => {
                   {user.firstName} {user.lastName}
                 </li>
                 <li>
+                  <span className="font-medium">Category:</span>{" "}
+                  {course.category}
+                </li>
+                <li>
                   <span className="font-medium">Language:</span>{" "}
                   {course.language}
                 </li>
@@ -71,6 +139,69 @@ const InstractureSingleCourses = () => {
                 </li>
               </ul>
             </div>
+
+            <div className="flex bg-gray-50 mt-5">
+              <div className="flex flex-col p-5 w-full">
+                {loading ? (
+                  <p className="text-gray-600 text-lg">Loading...</p>
+                ) : (
+                  <>
+                    {assessmentExists ? (
+                      <div className="flex space-x-4 justify-center">
+                        <button
+                          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md shadow-md transition duration-200"
+                          onClick={handleViewExam}
+                        >
+                          View Exam
+                        </button>
+                        <button
+                          onClick={handleEditExam}
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-md shadow-md transition duration-200"
+                        >
+                          Edit Exam
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex space-x-4 justify-center">
+                        <button
+                          onClick={handleAddExam}
+                          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-md shadow-md transition duration-200"
+                        >
+                          Add Exam
+                        </button>
+                      </div>
+                    )}
+                    <AddExamModal
+                      isOpen={isAddExamModalOpen}
+                      onClose={() => setIsAddExamModalOpen(false)}
+                      onSubmit={handleModalSubmit}
+                      instructorId={user._id}
+                      courseId={course._id}
+                    />
+
+                    {examDetails && (
+                      <ViewExamModal
+                        isOpen={isViewExamModalOpen}
+                        onClose={() => setIsViewExamModalOpen(false)}
+                        exam={examDetails}
+                      />
+                    )}
+
+                    {examDetails && (
+                      <EditExamModal
+                        isOpen={isEditExamModalOpen}
+                        onClose={() => setIsEditExamModalOpen(false)}
+                        exam={examDetails}
+                        onSubmit={handleModalSubmit}
+                        instructorId={user._id}
+                        courseId={course._id}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
             {course.isRejected ? (
               <div className="p-4 mt-4  bg-gray-50 rounded-lg shadow-sm">
                 <h3 className="text-2xl text-red-600 font-semibold mb-4">

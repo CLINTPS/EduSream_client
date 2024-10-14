@@ -75,6 +75,9 @@ const AdminCourse = () => {
                       Ins Id
                     </th>
                     <th className="py-3 px-4 text-left font-semibold text-gray-600">
+                    Category
+                    </th>
+                    <th className="py-3 px-4 text-left font-semibold text-gray-600">
                       Language
                     </th>
                     <th className="py-3 px-4 text-left font-semibold text-gray-600">
@@ -97,6 +100,9 @@ const AdminCourse = () => {
                       </td>
                       <td className="py-2 px-4">
                         {courses.instructorRef || "--"}
+                      </td>
+                      <td className="py-2 px-4">
+                        {courses.category || "--"}
                       </td>
                       <td className="py-2 px-4">
                         {courses.language || "--"}

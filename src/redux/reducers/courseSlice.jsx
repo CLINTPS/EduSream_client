@@ -29,19 +29,42 @@ const courseSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
+      // .addCase(getAllCourses.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(getAllCourses.fulfilled, (state, { payload }) => {
+      //   (state.loading = false),
+      //   (state.error = null),
+      //   (state.allCourse = payload.data.allData);
+      // })
+      // .addCase(getAllCourses.rejected, (state, { payload }) => {
+      //   (state.loading = false), (state.error = payload), (state.allCourse = null);
+      // })
+
 
       .addCase(getAllCourses.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getAllCourses.fulfilled, (state, { payload }) => {
-        (state.loading = false),
-        (state.error = null),
-        (state.allCourse = payload.data.allData);
+        console.log("Payload..",payload);
+        
+        state.loading = false;
+        state.error = null;
+        state.allCourse = payload.data.allCourse;
+        state.totalCourses = payload.data.totalCourses;
+        state.currentPage = payload.data.currentPage;
+        state.totalPages = payload.data.totalPages;
       })
       .addCase(getAllCourses.rejected, (state, { payload }) => {
-        (state.loading = false), (state.error = payload), (state.allCourse = null);
+        state.loading = false;
+        state.error = payload;
+        state.allCourse = [];
+        state.totalCourses = 0;
+        state.currentPage = 1;
+        state.totalPages = 1;
       })
 
 

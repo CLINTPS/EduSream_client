@@ -16,7 +16,6 @@ const InstructorSidebar = () => {
   };
 
   const handleLogout = () => {
-    console.log("Instrocture logOut.........");
     dispatch(logOut());
     navigate("/");
   };
@@ -50,7 +49,6 @@ const InstructorSidebar = () => {
           </div>
 
           <div className="flex flex-col mt-4 text-gray-300 font-bold flex-grow text-center">
-            <p></p>
             <Link
               to="/instructor/profile"
               className="px-6 py-4  hover:bg-gray-900"

@@ -11,9 +11,9 @@ const UserProfile = () => {
   return (
     <div className="lg:flex ">
       <UserSideBar />
-      <div className=" flex-grow p-6 h-screen bg-gray-300 lg:ml-64 ">
+      <div className=" flex-grow p-6 h-full bg-gray-300 lg:ml-64 ">
         <div className="flex justify-between">
-          <h2 className="text-3xl font-bold mb-6">User Profile</h2>
+          <h2 className="text-3xl font-bold mb-6">Profile</h2>
           <button className="bg-gray-400 h-10 px-4 rounded-2xl"
           onClick={handleBack}>Back</button>
         </div>

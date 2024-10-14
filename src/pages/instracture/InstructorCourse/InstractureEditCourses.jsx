@@ -14,7 +14,8 @@ const courseSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
   thumbnailImage: Yup.string(),
   thumbnailVideo: Yup.string(),
-  language: Yup.string(),
+  category: Yup.string().required("Category is required"),
+  language: Yup.string().required("Language is required"),
   lessons: Yup.array().of(
     Yup.object().shape({
       lessonNumber: Yup.string().required("Lesson number is required"),
@@ -24,10 +25,13 @@ const courseSchema = Yup.object().shape({
     })
   ),
   pricing: Yup.object().shape({
-    type: Yup.string().oneOf(["free", "paid"]).default("free"),
-    amount: Yup.number().when("type", {
-      is: "paid",
-      then: Yup.number().required("Amount is required"),
+    type: Yup.string().oneOf(['free', 'paid'], 'Invalid price type').required('Price type is required'),
+    amount: Yup.number().when('type', {
+      is: 'paid',
+      then: () => Yup.number()
+        .required('Price is required for paid courses')
+        .positive('Price must be a positive value'),
+      otherwise: () => Yup.number().test('is-zero', 'Price must be 0 for free courses', value => value === 0)
     }),
   }),
 });
@@ -82,6 +86,7 @@ const InstructorEditCourses = () => {
             description: course.description || "",
             thumbnailImage: course.thumbnailImage || "",
             thumbnailVideo: course.thumbnailVideo || "",
+            category:course.category || "",
             language: course.language || "english",
             lessons: course.lessons || [{
               lessonNumber: "",
@@ -167,6 +172,30 @@ const InstructorEditCourses = () => {
                 </Field>
                 <ErrorMessage
                   name="language"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Course Category
+                </label>
+                <Field
+                  name="category"
+                  as="select"
+                  className="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="">Select Category</option>
+                  <option value="Under-graduate">Under-graduate</option>
+                  <option value="Graduate">Graduate</option>
+                  <option value="Post-graduate">Post-graduate</option>
+                </Field>
+                <ErrorMessage
+                  name="category"
                   component="div"
                   className="text-red-500 text-sm"
                 />

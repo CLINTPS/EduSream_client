@@ -81,7 +81,7 @@ const CourseList = () => {
                       className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
                       onClick={() => handleFullView(course.courseId._id)}
                     >
-                      View Details
+                      View
                     </button>
                   </div>
                 </div>

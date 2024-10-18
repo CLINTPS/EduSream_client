@@ -63,6 +63,12 @@ const UserSideBar = () => {
             >
               Suggested Courses
             </Link>
+            <Link
+              to="/home/result-certificate"
+              className="px-6 py-4 hover:bg-gray-900"
+            >
+              Results & Certificates
+            </Link>
             <Link to="/home/chat" className="px-6 py-4 hover:bg-gray-900">
               Message
             </Link>

@@ -4,12 +4,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { URL } from "../../common/api";
 import axios from "axios";
 import LodingData from "../../components/lodingData/LodingData";
+import { useSelector } from "react-redux";
 
 const UserSingleEnrolledCourses = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { courseId } = useParams();
+  const { user } = useSelector((state) => state.user);
   const [course, setCourse] = useState(null);
-  console.log("_____________________", course);
+  const [assessmentExists, setAssessmentExists] = useState(false);
+  const [examDetails, setExamDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [hasAttendedAssessment, setHasAttendedAssessment] = useState(false);
+  const [assessmentResult, setAssessmentResult] = useState(null);
+  // const [showExamDetails,setShowExamDetails]=useState(false)
+  // console.log("_____________________", course);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +25,6 @@ const UserSingleEnrolledCourses = () => {
         const response = await axios.get(
           `${URL}/course/enrollment/singleView/${courseId}`
         );
-        console.log("Response of enrolled course:", response);
 
         if (response.data && response.data.data) {
           setCourse(response.data.data.courseId);
@@ -32,12 +39,83 @@ const UserSingleEnrolledCourses = () => {
 
   console.log("Course data:", course);
 
-  const handleBack = () => {
-    navigate("/home/enrolled-list")
-  }
+  useEffect(() => {
+    const checkExam = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${URL}/course/check-Assessment/${course._id}`
+        );
+        if (response.data.success) {
+          setAssessmentExists(true);
+          setExamDetails(response.data.data);
+        } else {
+          setAssessmentExists(false);
+        }
+      } catch (error) {
+        console.error("Error checking exam existence", error);
+        setAssessmentExists(false);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!course) {
-    return <LodingData />;
+    if (course) {
+      checkExam();
+    }
+  }, [course]);
+
+  useEffect(() => {
+    const checkAttendance = async () => {
+      if (examDetails && user) {
+        try {
+          const attendanceResponse = await axios.post(
+            `${URL}/course/check-assessment-attendance`,
+            {
+              examId: examDetails._id,
+              userId: user._id,
+            }
+          );
+          console.log("attendanceResponse...", attendanceResponse);
+
+          if (attendanceResponse.data.success && attendanceResponse.data.data) {
+            setHasAttendedAssessment(true);
+            setAssessmentResult(attendanceResponse.data.data);
+          } else {
+            setHasAttendedAssessment(false);
+          }
+        } catch (error) {
+          console.error("Error checking attendance:", error);
+        }
+      }
+    };
+
+    if (examDetails && user) {
+      checkAttendance();
+    }
+  }, [examDetails, user]);
+
+  const handleBack = () => {
+    navigate("/home/enrolled-list");
+  };
+
+  const handleStartAssessment = () => {
+    navigate(`/home/assessment/${examDetails._id}`, {
+      state: {
+        examDetails,
+        courseId
+      },
+    });
+  };
+  if (loading || !course) {
+    return (
+      <div className="lg:flex bg-gray-100 min-h-screen">
+        <UserSideBar />
+        <div className="flex-grow p-8 lg:ml-64">
+          <LodingData />;
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -49,8 +127,10 @@ const UserSingleEnrolledCourses = () => {
             {course?.title || "No Title"}
           </h1>
           <div className="mt-4 lg:mt-0">
-            <button className="bg-gray-500 text-white py-2 px-4 rounded-full shadow hover:bg-gray-600 transition duration-300"
-            onClick={handleBack}>
+            <button
+              className="bg-gray-500 text-white py-2 px-4 rounded-full shadow hover:bg-gray-600 transition duration-300"
+              onClick={handleBack}
+            >
               Back
             </button>
           </div>
@@ -82,6 +162,49 @@ const UserSingleEnrolledCourses = () => {
                     ? "Free"
                     : `$${course.pricing.amount}`}
                 </li>
+              </ul>
+            </div>
+
+            <div className="p-4 mt-6 bg-gray-50 rounded-lg shadow-sm">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+                Assessment Details
+              </h3>
+              <ul className="space-y-4 text-gray-700">
+                {assessmentExists ? (
+                  <div>
+                    {hasAttendedAssessment && assessmentResult ? (
+                      <div className="mt-4">
+                        <h4 className="text-lg font-bold text-gray-800">
+                          Exam Result:{" "}
+                          <span
+                            className={
+                              assessmentResult.resultStatus === "Passed"
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {assessmentResult.resultStatus}
+                          </span>
+                        </h4>
+                        <button
+                          className="bg-gray-600 text-white py-2 px-2 rounded-lg mt-2"
+                          onClick={() => navigate("/home/result-certificate")}
+                        >
+                          View Result
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className="bg-green-400 py-2 px-4 rounded-lg"
+                        onClick={handleStartAssessment}
+                      >
+                        Start Assessment
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div>No assessment found for this course.</div>
+                )}
               </ul>
             </div>
           </div>

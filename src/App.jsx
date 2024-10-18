@@ -13,8 +13,7 @@ const SignUp = lazy(() => import("./pages/auth/SignUp"));
 const ForgotPassword = lazy(()=>import("./pages/auth/ForgotPassword"))
 const PaymentSuccess = lazy(()=>import("./pages/user/payment/PaymentSuccess"))
 const PaymentFailed = lazy(()=>import("./pages/user/payment/PaymentFailed"))
-const GustCoursePage = lazy(()=>import("./pages/guest/GustCoursePage"))
-
+const ResultCertificate = lazy(()=>import("./pages/user/ResultCertificate"))
 //User
 const UserHome = lazy(() => import("./pages/user/UserHome"));
 const UserProfile = lazy(()=>import("./pages/user/UserProfile"));
@@ -25,6 +24,7 @@ const UserCoursePage = lazy(()=>import("./pages/user/UserCoursePage"))
 const CourseDetailPage = lazy(()=>import("./pages/user/CourseDetailPage"))
 const UserChat = lazy(()=>import("./pages/user/UserChatBoxPage"))
 const UserSingleEnrolledCourses = lazy(()=>import("./pages/user/UserSingleEnrolledCourses"))
+const UserExamPage = lazy(()=>import("./pages/user/UserExamPage"))
 
 //Admin
 const AdminDash = lazy(() => import("./pages/admin/AdminDash"));
@@ -77,9 +77,6 @@ function App() {
           <Route path="/AllCourses" element={<UserCoursePage />} />
           <Route path="/course/:id" element={<CourseDetailPage />} />
 
-
-
-
           {/* Protected routes */}
           <Route path="/home/*" element={user ?  <StudentRoute /> : <Navigate to="/index" />} />
           <Route path="/admin/*" element={user && user.role === "admin" ? <AdminRoutes /> : <Navigate to="/" />} />
@@ -115,6 +112,8 @@ function StudentRoute(){
       <Route path="suggested-list" element={<UserSuggestionCourse/>}/>
       <Route path="enrolled-list/singleView/:courseId" element={<UserSingleEnrolledCourses />} />
       <Route path="chat" element={<UserChat />} />
+      <Route path="assessment/:examId" element={<UserExamPage />} />
+      <Route path="result-certificate" element={<ResultCertificate />} />
     </Routes>
   )
 }

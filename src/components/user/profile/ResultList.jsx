@@ -92,7 +92,7 @@ const ResultList = () => {
     );
   }
 
-  if (!results.length) {
+  if (!results) {
     return (
       <div>
         <EmtyData message="No results and certificate" />

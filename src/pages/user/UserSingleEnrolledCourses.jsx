@@ -5,6 +5,8 @@ import { URL } from "../../common/api";
 import axios from "axios";
 import LodingData from "../../components/lodingData/LodingData";
 import { useSelector } from "react-redux";
+import ReviewModal from "../../components/modals/ReviewModal";
+import toast from 'react-hot-toast'
 
 const UserSingleEnrolledCourses = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const UserSingleEnrolledCourses = () => {
   const [loading, setLoading] = useState(false);
   const [hasAttendedAssessment, setHasAttendedAssessment] = useState(false);
   const [assessmentResult, setAssessmentResult] = useState(null);
-  // const [showExamDetails,setShowExamDetails]=useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // console.log("_____________________", course);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const UserSingleEnrolledCourses = () => {
     fetchData();
   }, [courseId]);
 
-  console.log("Course data:", course);
+  // console.log("Course data:", course);
 
   useEffect(() => {
     const checkExam = async () => {
@@ -103,10 +105,37 @@ const UserSingleEnrolledCourses = () => {
     navigate(`/home/assessment/${examDetails._id}`, {
       state: {
         examDetails,
-        courseId
+        courseId,
       },
     });
   };
+
+  const handleAddReview = async (rating,review)=>{
+    try {
+      // console.log("Review & Rating",rating,review);
+      // console.log("Course ID :",courseId);
+      // console.log("User ID and Name :",user._id,user.firstName);
+
+      const response = await axios.post(`${URL}/course/add-review`, {
+        courseId,
+        rating,
+        review,
+        userId: user._id,
+        userName: user.firstName,
+      });
+
+      console.log("Response of review adding",response);
+      if (response.data.success){
+        toast.success("Review & Rating submitted successfully!");
+      }else{
+        toast.error("Failed to submit review.");
+      }
+      
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  }
+
   if (loading || !course) {
     return (
       <div className="lg:flex bg-gray-100 min-h-screen">
@@ -226,6 +255,29 @@ const UserSingleEnrolledCourses = () => {
               </h3>
               <p className="text-gray-600 break-words">{course.description}</p>
             </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex justify-between">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                  Reviews
+                </h3>
+                <div>
+                  <button className="bg-yellow-300 font-semibold py-1 px-2 rounded-lg hover:bg-yellow-500"
+                  onClick={() => setIsModalOpen(true)}
+                  >
+                    Add Review
+                  </button>
+                </div>
+
+                <ReviewModal
+                isOpen={isModalOpen}
+                onClose={()=>setIsModalOpen(false)}
+                onSubmit={handleAddReview}
+                />
+              </div>
+              <p className="text-gray-600 break-words">{course.description}</p>
+            </div>
+
           </div>
         </div>
 

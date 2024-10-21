@@ -45,7 +45,7 @@ export const SocketProvider = ({children})=>{
             toast.success("New message received!");
         });
 
-        setSocket(newSocket);
+        setSocket(newSocket); 
 
       return () => {
         newSocket.disconnect();

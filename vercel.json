@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+      { "source": "/(.*)", "destination": "https://edu-sream-client.vercel.app" }
+    ]
+  }
+  

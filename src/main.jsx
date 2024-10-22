@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Toaster } from 'react-hot-toast'
 
-// console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

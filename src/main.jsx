@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   
   <React.StrictMode>
     <Provider store={store}>
-    <GoogleOAuthProvider clientId='176344730742-d2215e6pfoilhu3phfrhfehfpci4sq3j.apps.googleusercontent.com'>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <Toaster/>
         <App />
     </GoogleOAuthProvider>

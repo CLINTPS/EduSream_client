@@ -84,7 +84,7 @@ export const logOut = createAsyncThunk(
       return data;
     } catch (error) {
       console.error("Error from logout:", error);
-      return error;
+      return rejectWithValue(error.response.data);
     }
   }
 );

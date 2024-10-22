@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "/(.*)", "destination": "https://edu-sream-client.vercel.app" }
+      { "source": "/(.*)", "destination": "https://edu-stream-client.vercel.app" }
     ]
   }
   

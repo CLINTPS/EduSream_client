@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-export const URL = 'http://localhost:4000/api'
+// export const URL = 'http://localhost:4000/api'
+export const URL = import.meta.env.VITE_REACT_APP_URL
 
 const apiInstance=axios.create({baseURL:URL});
 
